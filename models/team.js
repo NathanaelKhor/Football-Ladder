@@ -15,18 +15,38 @@ const teamSchema = mongoose.Schema({
     },
     gamesPlayed: {
         type: Number,
-        required: true
+        required: true,
+        default: 0
+    },
+    wins: {
+        type: Number,
+        required: true,
+        default: 0
+    },
+    losses: {
+        type: Number,
+        required: true,
+        default: 0
+    },
+    draws: {
+        type: Number,
+        required: true,
+        default: 0
     },
     goalsFor: {
         type: Number,
-        required: true
+        required: true,
+        default: 0
     },
     goalsAgainst: {
         type: Number,
-        required: true
+        required: true,
+        default: 0
     },
     goalDifference: {
-        type: Number
+        type: Number,
+        required: true,
+        default: 0
     }
 })
 
