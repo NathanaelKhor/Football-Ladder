@@ -47,7 +47,15 @@ const teamSchema = mongoose.Schema({
         type: Number,
         required: true,
         default: 0
+    },
+    points: {
+        type: Number,
+        required: true,
+        default: 0
     }
-})
+});
+
+
+
 
 module.exports = mongoose.model("Team", teamSchema);

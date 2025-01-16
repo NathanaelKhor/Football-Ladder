@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const ladderSchema = mongoose.Schema({
+const matchSchema = mongoose.Schema({
     home: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Team",
@@ -11,12 +11,14 @@ const ladderSchema = mongoose.Schema({
         ref: "Team",
         required: true
     },
-    teams: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Team"
-        },
-    ],
-})
+    homeGoals: {
+        type: Number,
+        required: true
+    },
+    awayGoals: {
+        type: Number,
+        required: true
+    },
+});
 
-module.exports = mongoose.model("Ladder", ladderSchema);
+module.exports = mongoose.model("Match", matchSchema);

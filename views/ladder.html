@@ -19,6 +19,8 @@
                 <li><a href="/matches">Matches</a></li>
                 <li><a href="/results">Results</a></li>
                 <li><a href="/add-team">Add Team</a></li>
+                <li><a href="/log-match">Log Match</a></li>
+
             </ul>
         </div>
     </nav>
@@ -38,7 +40,8 @@
             <th>Losses</th>
             <th>Goals For</th>
             <th>Goals Against</th>
-            <th>Goal Difference  </th>
+            <th>Goal Difference</th>
+            <th>Points</th>
 
         </tr>
             <% for(let i=0;i<teams.length;i++){ %>
@@ -51,6 +54,7 @@
                 <td><%= teams[i].goalsFor %></td>
                 <td><%= teams[i].goalsAgainst %></td>
                 <td><%= teams[i].goalDifference %></td>
+                <td><%= teams[i].points %></td>
             </tr>
             <%} %>
         <%} %>

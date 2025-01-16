@@ -5,6 +5,7 @@ const ejs = require('ejs');
 let path = require('path')
 const Ladder = require('./models/ladder');
 const Team = require('./models/team');
+const Match = require('./models/match');
 const { ObjectId } = require('mongodb');
 const app = express();
 
@@ -40,7 +41,6 @@ app.get("/", function(req,res){
 });
 
 app.get("/ladder", async function(req,res){
-    let ladders = await Ladder.find({});
     let teams = await Team.find({});
     res.render('ladder', {teams: teams});
 });
@@ -55,12 +55,47 @@ app.get("/results", function(req,res){
 
 app.get('/add-team', async function(req,res){
     let teams = await Team.find({});
-    res.render('add_team', {teams, teams});
+    res.render('add-team', {teams, teams});
 });
 
 app.post('/add-team', async function(req,res){
     let name = req.body.name;
     let team = new Team({name: name});
     await team.save()
-    res.render('ladder')
+    let teams = await Team.find({});
+    res.render('ladder', {teams: teams});
 });
+
+app.get('/log-match', async function(req,res){
+    let teams = await Team.find({});
+    res.render('log-match', {teams, teams});
+});
+
+app.post('/log-match', async function(req,res){
+    let homeTeam = await Team.findOne({_id: new ObjectId(req.body.homeTeamId)});
+    let awayTeam = await Team.findOne({_id: new ObjectId(req.body.awayTeamId)});
+    let homeGoals = req.body.homeGoals
+    let awayGoals = req.body.awayGoals
+    let match = new Match({home: homeTeam, away: awayTeam, homeGoals: homeGoals, awayGoals: awayGoals})
+    await match.save()
+
+    if (homeGoals > awayGoals){
+        await Team.updateOne({_id: homeTeam._id}, {$inc: {wins: 1, gamesPlayed: 1, goalsFor: homeGoals, goalsAgainst: awayGoals, points: 3}})
+        await Team.updateOne({_id: awayTeam._id}, {$inc: {losses: 1, gamesPlayed: 1, goalsFor: awayGoals, goalsAgainst: homeGoals}})
+    }
+    else if (homeGoals < awayGoals){
+        await Team.updateOne({_id: homeTeam._id}, {$inc: {losses: 1, gamesPlayed: 1, goalsFor: homeGoals, goalsAgainst: awayGoals}})
+        await Team.updateOne({_id: awayTeam._id}, {$inc: {wins: 1, gamesPlayed: 1, goalsFor: awayGoals, goalsAgainst: homeGoals, points: 3}})
+    }
+    else if (homeGoals == awayGoals){
+        await Team.updateOne({_id: homeTeam._id}, {$inc: {draws: 1, gamesPlayed: 1, goalsFor: homeGoals, goalsAgainst: awayGoals, points: 1}})
+        await Team.updateOne({_id: awayTeam._id}, {$inc: {draws: 1, gamesPlayed: 1, goalsFor: awayGoals, goalsAgainst: homeGoals, points: 1}})
+    }
+
+    await Team.updateOne({_id: homeTeam._id}, {$inc: {goalDifference: (homeGoals - awayGoals)}})
+    await Team.updateOne({_id: awayTeam._id}, {$inc: {goalDifference: (awayGoals - homeGoals)}})
+
+    let teams = await Team.find({})
+    res.render('ladder', {teams: teams})
+});
+
