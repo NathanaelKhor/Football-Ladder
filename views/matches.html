@@ -25,4 +25,26 @@
         </div>
     </nav>
 </body>
+
+<body></body>
+    <h1>Past Matches</h1>
+    <table> 
+        <% if (matches.length == 0) { %>
+            <p1>Please add a match</p1>
+        <%} else { %>
+        <tr>
+            <th>Home</th>
+            <th>Away</th>
+            <th>Score</th>
+        </tr>
+            <% for(let i=0;i<matches.length;i++){ %>
+            <tr>
+                <td><%= matches[i].home.name %></td>
+                <td><%= matches[i].away.name %></td>
+                <td><%= matches[i].homeGoals %> - <%= matches[i].awayGoals %></td>
+            </tr>
+            <%} %>
+        <%} %>
+    </table>
+</body>
 </html>

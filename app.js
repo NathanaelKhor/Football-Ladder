@@ -33,7 +33,7 @@ app.listen(PORT_NUMBER, function () {
       await mongoose.connect(url);
   }
   connect()
-      .catch((err) => console.log(err))
+      .catch((err) => console.log(err));
 
 
 app.get("/", function(req,res){
@@ -41,12 +41,13 @@ app.get("/", function(req,res){
 });
 
 app.get("/ladder", async function(req,res){
-    let teams = await Team.find({});
+    let teams = await Team.find({}).sort({points: -1, goalDifference:-1 ,goalsFor:-1 ,name:1});
     res.render('ladder', {teams: teams});
 });
 
-app.get("/matches", function(req,res){
-    res.render('matches');
+app.get("/matches", async function(req,res){
+    let matches = await Match.find({}).populate('home').populate('away');
+    res.render('matches', {matches: matches});
 });
 
 app.get("/results", function(req,res){
@@ -61,13 +62,12 @@ app.get('/add-team', async function(req,res){
 app.post('/add-team', async function(req,res){
     let name = req.body.name;
     let team = new Team({name: name});
-    await team.save()
-    let teams = await Team.find({});
-    res.render('ladder', {teams: teams});
+    await team.save();
+    res.redirect('/ladder')
 });
 
 app.get('/log-match', async function(req,res){
-    let teams = await Team.find({});
+    let teams = await Team.find({}).sort({points: -1, goalDifference:-1 ,goalsFor:-1 ,name:1})
     res.render('log-match', {teams, teams});
 });
 
@@ -95,7 +95,6 @@ app.post('/log-match', async function(req,res){
     await Team.updateOne({_id: homeTeam._id}, {$inc: {goalDifference: (homeGoals - awayGoals)}})
     await Team.updateOne({_id: awayTeam._id}, {$inc: {goalDifference: (awayGoals - homeGoals)}})
 
-    let teams = await Team.find({})
-    res.render('ladder', {teams: teams})
+    res.redirect('/ladder')
 });
 
