@@ -16,12 +16,36 @@
             <ul class="nav-links">
                 <li><a href="/">Home</a></li>
                 <li><a href="/ladder">Ladder</a></li>
-                <li><a href="/matches">Matches</a></li>
                 <li><a href="/results">Results</a></li>
                 <li><a href="/add-team">Add Team</a></li>
                 <li><a href="/log-match">Log Match</a></li>
+
             </ul>
         </div>
     </nav>
+</body>
+
+<body></body>
+    <h1>Past Results</h1>
+    <table> 
+        <% if (matches.length == 0) { %>
+            <p1>Please add a match</p1>
+        <%} else { %>
+        <tr>
+            <th>Home</th>
+            <th>Away</th>
+            <th>Score</th>
+            <th>Date</th>
+        </tr>
+            <% for(let i=0;i<matches.length;i++){ %>
+            <tr>
+                <td><%= matches[i].home.name %></td>
+                <td><%= matches[i].away.name %></td>
+                <td><%= matches[i].homeGoals %> - <%= matches[i].awayGoals %></td>
+                <td><%= matches[i].date %></td>
+            </tr>
+            <%} %>
+        <%} %>
+    </table>
 </body>
 </html>

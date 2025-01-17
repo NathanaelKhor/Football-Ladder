@@ -47,11 +47,13 @@ app.get("/ladder", async function(req,res){
 
 app.get("/matches", async function(req,res){
     let matches = await Match.find({}).populate('home').populate('away');
+    matches.reverse()
     res.render('matches', {matches: matches});
 });
 
-app.get("/results", function(req,res){
-    res.render('results');
+app.get("/results", async function(req,res){
+    let matches = await Match.find({}).populate('home').populate('away').populate('date').sort({date: -1});
+    res.render('results', {matches: matches});
 });
 
 app.get('/add-team', async function(req,res){
@@ -76,7 +78,7 @@ app.post('/log-match', async function(req,res){
     let awayTeam = await Team.findOne({_id: new ObjectId(req.body.awayTeamId)});
     let homeGoals = req.body.homeGoals
     let awayGoals = req.body.awayGoals
-    let match = new Match({home: homeTeam, away: awayTeam, homeGoals: homeGoals, awayGoals: awayGoals})
+    let match = new Match({home: homeTeam, away: awayTeam, homeGoals: homeGoals, awayGoals: awayGoals, date: req.body.date})
     await match.save()
 
     if (homeGoals > awayGoals){
@@ -97,4 +99,7 @@ app.post('/log-match', async function(req,res){
 
     res.redirect('/ladder')
 });
+
+
+
 

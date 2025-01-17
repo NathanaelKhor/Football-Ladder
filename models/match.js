@@ -19,6 +19,10 @@ const matchSchema = mongoose.Schema({
         type: Number,
         required: true
     },
+    date: {
+        type: Date,
+        required: true
+    }
 });
 
 module.exports = mongoose.model("Match", matchSchema);

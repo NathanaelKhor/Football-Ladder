@@ -16,7 +16,6 @@
             <ul class="nav-links">
                 <li><a href="/">Home</a></li>
                 <li><a href="/ladder">Ladder</a></li>
-                <li><a href="/matches">Matches</a></li>
                 <li><a href="/results">Results</a></li>
                 <li><a href="/add-team">Add Team</a></li>
                 <li><a href="/log-match">Log Match</a></li>
@@ -33,6 +32,7 @@
             <tr>
                 <label for="homeTeamId" class="form-label">Home Team</label>
                 <select name="homeTeamId" id="homeTeamId" class="form-select" required>
+                    <option disabled selected value> -- select an option -- </option>
                     <% for (let i=0;i<teams.length;i++){ %>
                         <option value="<%= teams[i]._id %>"><%= teams[i].name %></option>
                     <% } %>
@@ -40,11 +40,12 @@
             </tr>
             <tr>
                 <td> <label>Home Goals Scored</label></td>
-                <td> <input class="btn submit" type="number" name="homeGoals" placeholder="Enter goals scored" min="0" max="99" required/></td>
+                <td> <input class="input-box" type="number" name="homeGoals" placeholder="Enter goals scored" min="0" max="99" required/></td>
             </tr>
             <tr>
                 <label for="awayTeamId" class="form-label">Away Team</label>
                 <select name="awayTeamId" id="awayTeamId" class="form-select" required>
+                    <option disabled selected value> -- select an option -- </option>
                     <% for (let i=0;i<teams.length;i++){ %>
                         <option value="<%= teams[i]._id %>"><%= teams[i].name %></option>
                     <% } %>
@@ -52,7 +53,11 @@
             </tr>
             <tr>
                 <td> <label>Away Goals Scored</label></td>
-                <td> <input class="btn submit" type="number" name="awayGoals" placeholder="Enter goals scored" min="0" max="99" required/></td>
+                <td> <input class="input-box" type="number" name="awayGoals" placeholder="Enter goals scored" min="0" max="99" required/></td>
+            </tr>
+            <tr></tr>
+                <td> <label>Date</label></td>
+                <td> <input class="input-box" type="datetime-local" name="date" placeholder="Enter date" required/></td>
             </tr>
         </tr>
             <tr>
@@ -60,5 +65,30 @@
             </tr>
         </table> 
     </form>
+    <script>
+        function preventDupes( select, index ) {
+        var options = select.options,
+        len = options.length;
+        while( len-- ) {
+            options[ len ].disabled = false;
+        }
+        select.options[ index ].disabled = true;
+        if( index === select.selectedIndex ) {
+            alert('You\'ve already selected the item "' + select.options[index].text + '".\n\nPlease choose another.');
+            this.selectedIndex = 0;
+        }
+    }
+
+    var select1 = select = document.getElementById( 'homeTeamId' );
+    var select2 = select = document.getElementById( 'awayTeamId' );
+
+    select1.onchange = function() {
+        preventDupes.call(this, select2, this.selectedIndex );
+    };
+
+    select2.onchange = function() {
+        preventDupes.call(this, select1, this.selectedIndex );
+    };
+    </script>
 </body>
 </html>
