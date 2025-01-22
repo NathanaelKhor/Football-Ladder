@@ -11,7 +11,7 @@
 
 <body>
     <nav class="site-nav">
-        <div class="logo">Football Leagues</div>
+        <div class="logo">Ladder</div>
         <div>
             <ul class="nav-links">
                 <li><a href="/">Home</a></li>
@@ -27,36 +27,38 @@
 
 <body>
     <h1>Ladder</h1>
-    <table> 
-        <% if (teams.length == 0) { %>
-            <p1>Please add a team</p1>
-        <%} else { %>
-        <tr>
-            <th>Team</th>
-            <th>Played</th>
-            <th>Wins</th>
-            <th>Draws</th>
-            <th>Losses</th>
-            <th>Goals For</th>
-            <th>Goals Against</th>
-            <th>Goal Difference</th>
-            <th>Points</th>
-
-        </tr>
-            <% for(let i=0;i<teams.length;i++){ %>
+    <div id="ladder">
+        <table > 
+            <% if (teams.length == 0) { %>
+                <p>Please add a team</p>
+            <%} else { %>
             <tr>
-                <td><%= teams[i].name %></td>
-                <td><%= teams[i].gamesPlayed %></td>
-                <td><%= teams[i].wins %></td>
-                <td><%= teams[i].draws %></td>
-                <td><%= teams[i].losses %></td>
-                <td><%= teams[i].goalsFor %></td>
-                <td><%= teams[i].goalsAgainst %></td>
-                <td><%= teams[i].goalDifference %></td>
-                <td><%= teams[i].points %></td>
+                <th>Team</th>
+                <th>Played</th>
+                <th>Wins</th>
+                <th>Draws</th>
+                <th>Losses</th>
+                <th>Goals For</th>
+                <th>Goals Against</th>
+                <th>Goal Difference</th>
+                <th>Points</th>
+
             </tr>
+                <% for(let i=0;i<teams.length;i++){ %>
+                <tr>
+                    <td><%= teams[i].name %></td>
+                    <td><%= teams[i].gamesPlayed %></td>
+                    <td><%= teams[i].wins %></td>
+                    <td><%= teams[i].draws %></td>
+                    <td><%= teams[i].losses %></td>
+                    <td><%= teams[i].goalsFor %></td>
+                    <td><%= teams[i].goalsAgainst %></td>
+                    <td><%= teams[i].goalDifference %></td>
+                    <td><%= teams[i].points %></td>
+                </tr>
+                <%} %>
             <%} %>
-        <%} %>
-    </table>
+        </table>
+    </div>
 </body>
 </html>

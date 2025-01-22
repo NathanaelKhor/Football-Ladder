@@ -11,7 +11,7 @@ const app = express();
 
 const url = "mongodb://localhost:27017/Football-Ladder";
 
-app.use(express.static('public/images'));
+app.use(express.static('public'));
 
 app.engine("html", ejs.renderFile);
 app.set("view engine", "html");
@@ -100,6 +100,9 @@ app.post('/log-match', async function(req,res){
     res.redirect('/ladder')
 });
 
+app.get("*", function(req,res){
+    res.render('404');
+});
 
 
 
